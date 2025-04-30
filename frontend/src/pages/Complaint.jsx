@@ -37,6 +37,28 @@ const ComplaintForm = () => {
     setIsDarkMode(!isDarkMode);
   };
 
+  const sendEmailNotification = async (subject, message) => {
+    try {
+      const response = await fetch("http://localhost:3000/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          toEmail: "adarshpathak181210@gmail.com",
+          subject: subject,
+          message: message,
+        }),
+      });
+
+      if (!response.ok) {
+        console.error("Failed to send email notification");
+      }
+    } catch (err) {
+      console.error("Error sending email notification:", err);
+    }
+  };
+
   const onSubmitForm = async (e) => {
     e.preventDefault();
 
@@ -63,11 +85,22 @@ const ComplaintForm = () => {
         headers: headers,
         body: JSON.stringify(body),
       });
-      setSuccessMessage("Complaint registered successfully!");
-      setShowSuccessModal(true);
-      setTimeout(() => {
-        window.location = "/";
-      }, 2000);
+
+      if (response.ok) {
+        // Send email notification
+        const emailSubject = `New Complaint: ${name} - Room ${room}`;
+        const emailMessage = `A new complaint has been registered:\n\nType: ${name}\nRoom: ${room}\nDescription: ${description}`;
+        await sendEmailNotification(emailSubject, emailMessage);
+
+        setSuccessMessage("Complaint registered successfully!");
+        setShowSuccessModal(true);
+        setTimeout(() => {
+          window.location = "/";
+        }, 2000);
+      } else {
+        setSuccessMessage("Failed to register complaint. Please try again.");
+        setShowSuccessModal(true);
+      }
     } catch (err) {
       setSuccessMessage("An error occurred. Please try again.");
       setShowSuccessModal(true);
