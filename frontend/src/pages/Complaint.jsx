@@ -30,6 +30,8 @@ const ComplaintForm = () => {
   const [description, setDescription] = useState("");
   const [room, setRoom] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -39,15 +41,18 @@ const ComplaintForm = () => {
     e.preventDefault();
 
     if (!name || name.trim() === "") {
-      alert("Please enter a valid name.");
+      setSuccessMessage("Please enter a valid name.");
+      setShowSuccessModal(true);
       return;
     }
     if (!room || room.trim() === "") {
-      alert("Please enter Room No.");
+      setSuccessMessage("Please enter Room No.");
+      setShowSuccessModal(true);
       return;
     }
     if (!description || description.trim() === "") {
-      alert("Please enter a valid complaint.");
+      setSuccessMessage("Please enter a valid complaint.");
+      setShowSuccessModal(true);
       return;
     }
 
@@ -58,9 +63,14 @@ const ComplaintForm = () => {
         headers: headers,
         body: JSON.stringify(body),
       });
-      alert("Complain registered successfully!");
-      window.location = "/";
+      setSuccessMessage("Complaint registered successfully!");
+      setShowSuccessModal(true);
+      setTimeout(() => {
+        window.location = "/";
+      }, 2000);
     } catch (err) {
+      setSuccessMessage("An error occurred. Please try again.");
+      setShowSuccessModal(true);
       console.error(err.message);
     }
   };
@@ -231,6 +241,48 @@ const ComplaintForm = () => {
           </div>
         </div>
       </section>
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn">
+          <div className="bg-white rounded-2xl p-8 max-w-sm w-full mx-4 transform transition-all animate-scaleIn shadow-2xl">
+            <div className="flex flex-col items-center justify-center">
+              <div className={`rounded-full p-4 mb-4 ${successMessage.includes("successfully") ? "bg-green-100" : "bg-red-100"} animate-bounce`}>
+                {successMessage.includes("successfully") ? (
+                  <svg className="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  <svg className="w-12 h-12 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                )}
+              </div>
+              <h3 className={`text-2xl font-bold text-center mb-3 ${successMessage.includes("successfully") ? "text-green-800" : "text-red-800"}`}>
+                {successMessage.includes("successfully") ? "Complaint Registered!" : "Error"}
+              </h3>
+              <p className="text-gray-600 text-center mb-6 text-lg">{successMessage}</p>
+              <div className="flex justify-center w-full">
+                <button
+                  onClick={() => {
+                    setShowSuccessModal(false);
+                    if (!successMessage.includes("successfully")) {
+                      setSuccessMessage("");
+                    }
+                  }}
+                  className={`w-full px-6 py-3 rounded-xl text-white font-semibold text-lg shadow-lg transform transition-all duration-300 hover:scale-105 ${
+                    successMessage.includes("successfully") 
+                      ? "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700" 
+                      : "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700"
+                  }`}
+                >
+                  {successMessage.includes("successfully") ? "Redirecting..." : "Close"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

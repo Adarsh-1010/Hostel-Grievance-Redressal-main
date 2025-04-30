@@ -6,6 +6,8 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState('Student'); // Default to Student
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -25,9 +27,12 @@ function Login() {
         localStorage.setItem("jwtToken", data.jwtToken);
         navigate("/");
       } else {
-        alert("Invalid credentials. Please check your email and password.");
+        setErrorMessage("Invalid credentials. Please check your email and password.");
+        setShowErrorModal(true);
       }
     } catch (err) {
+      setErrorMessage("An error occurred. Please try again.");
+      setShowErrorModal(true);
       console.log(err.message);
     }
   };
@@ -105,6 +110,36 @@ function Login() {
           </div>
         </div>
       </div>{" "}
+
+      {/* Error Modal */}
+      {showErrorModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4 transform transition-all">
+            <div className="flex items-center justify-center mb-4">
+              <div className="rounded-full p-3 bg-red-100">
+                <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+            </div>
+            <h3 className="text-lg font-medium text-center mb-2 text-red-800">
+              Login Failed
+            </h3>
+            <p className="text-gray-600 text-center mb-4">{errorMessage}</p>
+            <div className="flex justify-center">
+              <button
+                onClick={() => {
+                  setShowErrorModal(false);
+                  setErrorMessage("");
+                }}
+                className="px-4 py-2 rounded-md text-white bg-red-600 hover:bg-red-700 transition-colors duration-200"
+              >
+                Try Again
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
