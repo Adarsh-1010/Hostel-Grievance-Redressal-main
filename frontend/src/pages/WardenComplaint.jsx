@@ -34,6 +34,16 @@ const WardenComplaints = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [isDeleteChecked, setIsDeleteChecked] = useState(false);
   const [filter, setFilter] = useState('all'); // 'all', 'pending', 'completed'
+  const [typeFilter, setTypeFilter] = useState(''); // For complaint type filter
+
+  const complaintTypes = [
+    { value: "", label: "All Types" },
+    { value: "Plumbing", label: "Plumbing" },
+    { value: "Electrical", label: "Electrical" },
+    { value: "Cleaning", label: "Cleaning" },
+    { value: "Housekeeping", label: "Housekeeping" },
+    { value: "Other", label: "Other" }
+  ];
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -94,10 +104,15 @@ const WardenComplaints = () => {
   };
 
   const filteredComplaints = complaints.filter(complaint => {
-    if (filter === 'all') return true;
-    if (filter === 'completed') return complaint.is_completed;
-    if (filter === 'pending') return !complaint.is_completed;
-    return true;
+    // First apply status filter
+    const statusMatch = filter === 'all' ? true :
+                       filter === 'completed' ? complaint.is_completed :
+                       !complaint.is_completed;
+    
+    // Then apply type filter
+    const typeMatch = typeFilter === '' ? true : complaint.name === typeFilter;
+    
+    return statusMatch && typeMatch;
   });
 
   return (
@@ -146,38 +161,65 @@ const WardenComplaints = () => {
             </div>
           </div>
 
-          {/* Filter Buttons */}
-          <div className="mt-6 flex justify-center gap-4">
-            <button
-              onClick={() => setFilter('all')}
-              className={`px-6 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
-                filter === 'all'
-                  ? `${isDarkMode ? 'bg-blue-500 text-white' : 'bg-blue-600 text-white'}`
-                  : `${isDarkMode ? 'bg-white/10 text-gray-300 hover:bg-white/20' : 'bg-white text-gray-700 hover:bg-gray-100'}`
-              }`}
-            >
-              All Complaints
-            </button>
-            <button
-              onClick={() => setFilter('pending')}
-              className={`px-6 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
-                filter === 'pending'
-                  ? `${isDarkMode ? 'bg-yellow-500 text-white' : 'bg-yellow-600 text-white'}`
-                  : `${isDarkMode ? 'bg-white/10 text-gray-300 hover:bg-white/20' : 'bg-white text-gray-700 hover:bg-gray-100'}`
-              }`}
-            >
-              Pending
-            </button>
-            <button
-              onClick={() => setFilter('completed')}
-              className={`px-6 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
-                filter === 'completed'
-                  ? `${isDarkMode ? 'bg-green-500 text-white' : 'bg-green-600 text-white'}`
-                  : `${isDarkMode ? 'bg-white/10 text-gray-300 hover:bg-white/20' : 'bg-white text-gray-700 hover:bg-gray-100'}`
-              }`}
-            >
-              Completed
-            </button>
+          {/* Filter Section */}
+          <div className="mt-6 flex flex-col items-center gap-4">
+            {/* Status Filter Buttons */}
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => setFilter('all')}
+                className={`px-6 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
+                  filter === 'all'
+                    ? `${isDarkMode ? 'bg-blue-500 text-white' : 'bg-blue-600 text-white'}`
+                    : `${isDarkMode ? 'bg-white/10 text-gray-300 hover:bg-white/20' : 'bg-white text-gray-700 hover:bg-gray-100'}`
+                }`}
+              >
+                All Complaints
+              </button>
+              <button
+                onClick={() => setFilter('pending')}
+                className={`px-6 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
+                  filter === 'pending'
+                    ? `${isDarkMode ? 'bg-yellow-500 text-white' : 'bg-yellow-600 text-white'}`
+                    : `${isDarkMode ? 'bg-white/10 text-gray-300 hover:bg-white/20' : 'bg-white text-gray-700 hover:bg-gray-100'}`
+                }`}
+              >
+                Pending
+              </button>
+              <button
+                onClick={() => setFilter('completed')}
+                className={`px-6 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
+                  filter === 'completed'
+                    ? `${isDarkMode ? 'bg-green-500 text-white' : 'bg-green-600 text-white'}`
+                    : `${isDarkMode ? 'bg-white/10 text-gray-300 hover:bg-white/20' : 'bg-white text-gray-700 hover:bg-gray-100'}`
+                }`}
+              >
+                Completed
+              </button>
+            </div>
+
+            {/* Type Filter Dropdown */}
+            <div className="relative">
+              <select
+                value={typeFilter}
+                onChange={(e) => setTypeFilter(e.target.value)}
+                className={`px-6 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 appearance-none cursor-pointer ${
+                  isDarkMode 
+                    ? 'bg-white/10 text-gray-300 border border-white/20 hover:bg-white/20' 
+                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-100'
+                } pr-10`}
+              >
+                {complaintTypes.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+              </select>
+              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                <svg className={`w-4 h-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -187,11 +229,13 @@ const WardenComplaints = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
             <p className={`text-xl ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-              {filter === 'all' 
+              {filter === 'all' && typeFilter === ''
                 ? 'No complaints registered yet.'
                 : filter === 'completed'
                 ? 'No completed complaints.'
-                : 'No pending complaints.'}
+                : filter === 'pending'
+                ? 'No pending complaints.'
+                : `No ${typeFilter} complaints found.`}
             </p>
           </div>
         ) : (
