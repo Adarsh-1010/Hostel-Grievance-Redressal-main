@@ -32,6 +32,7 @@ const ComplaintForm = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -61,20 +62,24 @@ const ComplaintForm = () => {
 
   const onSubmitForm = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (!name || name.trim() === "") {
       setSuccessMessage("Please enter a valid name.");
       setShowSuccessModal(true);
+      setIsLoading(false);
       return;
     }
     if (!room || room.trim() === "") {
       setSuccessMessage("Please enter Room No.");
       setShowSuccessModal(true);
+      setIsLoading(false);
       return;
     }
     if (!description || description.trim() === "") {
       setSuccessMessage("Please enter a valid complaint.");
       setShowSuccessModal(true);
+      setIsLoading(false);
       return;
     }
 
@@ -105,6 +110,8 @@ const ComplaintForm = () => {
       setSuccessMessage("An error occurred. Please try again.");
       setShowSuccessModal(true);
       console.error(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -253,7 +260,7 @@ const ComplaintForm = () => {
                 id="email"
                 type="text"
                 className={`w-full p-3 mb-4 border ${isDarkMode ? 'border-white/20 bg-white/5 text-gray-200' : 'border-gray-300 text-gray-700'} rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 hover:border-blue-400`}
-                placeholder="Enter your Room No."
+                placeholder="Enter your room number(and block) in this format"
                 onChange={(e) => setRoom(e.target.value)}
               />
               <label className={`mt-5 mb-2 inline-block ${isDarkMode ? 'text-gray-200' : 'text-gray-700'} font-medium`}>
@@ -265,10 +272,21 @@ const ComplaintForm = () => {
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
               <button
-                className={`w-full rounded-lg bg-gradient-to-r ${isDarkMode ? 'from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700' : 'from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'} p-3 text-center font-medium text-white shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-300 transform hover:-translate-y-0.5`}
+                className={`w-full rounded-lg bg-gradient-to-r ${isDarkMode ? 'from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700' : 'from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'} p-3 text-center font-medium text-white shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-300 transform hover:-translate-y-0.5 relative`}
                 onClick={onSubmitForm}
+                disabled={isLoading}
               >
-                Submit Complaint
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Submitting...
+                  </div>
+                ) : (
+                  "Submit Complaint"
+                )}
               </button>
             </div>
           </div>
@@ -312,6 +330,21 @@ const ComplaintForm = () => {
                   {successMessage.includes("successfully") ? "Redirecting..." : "Close"}
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Loading Overlay */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 max-w-sm w-full mx-4 transform transition-all animate-scaleIn shadow-2xl">
+            <div className="flex flex-col items-center justify-center">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mb-4"></div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">Processing Your Complaint</h3>
+              <p className="text-gray-600 text-center">
+                Please wait while we submit your complaint and send notifications...
+              </p>
             </div>
           </div>
         </div>
