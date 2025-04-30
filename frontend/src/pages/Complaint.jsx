@@ -57,7 +57,7 @@ const ComplaintForm = () => {
       // setTimeout(() => {
       //   toast.success("Complaint registered Successfully!");
       // }, [10]);
-      alert("Complain registered successfully!")
+      alert("Complain registered successfully!");
       window.location = "/";
       // }
     } catch (err) {
@@ -172,13 +172,29 @@ const ComplaintForm = () => {
               </p>
             </div>
             <div className="p-4 sm:p-8">
-              <input
+              {/* <input
                 id="name"
                 type="text"
                 className="mt-1 w-full resize-y overflow-auto rounded-lg border border-gray-300 px-4 py-2 shadow-sm focus:border-blue-500 focus:outline-none hover:border-blue-500"
                 placeholder="Enter Complaint name"
                 onChange={(e) => setName(e.target.value)}
-              />
+              /> */}
+              <select
+                className="w-full p-3 mb-4 border border-gray-300 rounded text-base"
+                id="complaintType"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              >
+                <option value="" disabled>
+                  Select a complaint type
+                </option>
+                <option value="Plumbing">Plumbing</option>
+                <option value="Electrical">Electrical</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Housekeeping">Housekeeping</option>
+                <option value="Other">Other</option>
+              </select>
               <input
                 id="email"
                 type="text"
@@ -238,9 +254,7 @@ const Complaint = () => {
       <section className="w-full px-10 py-10">
         <div className="container mx-auto flex flex-col gap-8">
           {Array.isArray(complaints) && complaints.length === 0 ? (
-            <p className="ml-4 mt-2 text-gray-600 text-xl">
-              
-            </p>
+            <p className="ml-4 mt-2 text-gray-600 text-xl"></p>
           ) : (
             <div className="container mx-auto grid gap-8 md:grid-cols-3 sm:grid-cols-1">
               {complaints.map((complaint) => (

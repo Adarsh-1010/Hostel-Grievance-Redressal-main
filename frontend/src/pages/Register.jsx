@@ -253,13 +253,13 @@ function Register() {
                           htmlFor="email"
                           className="mb-2 inline-block text-xs font-medium uppercase text-gray-700"
                         >
-                          USN
+                          Roll Number
                         </label>
                         <input
                           type="text"
                           className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:text-gray-600 focus:shadow"
                           name="email-username"
-                          placeholder="Enter your USN"
+                          placeholder="Enter your Roll Number"
                           autoFocus
                           onChange={(e) => setUsn(e.target.value)}
                         />

@@ -43,9 +43,9 @@ function Login() {
           />
           <div className="university-info">
             <h2>IIIT Ranchi</h2>
-            <p>Old College, South Bridge, Edinburgh EH8 9YL, UK</p>
+            <p>An Institution of National Importance under MoE, Govt. of India</p>
             <p className="highlighted-text">
-              Accounting, Economics, Engineering
+            Ministry of Education
             </p>
           </div>
         </div>
