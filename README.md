@@ -106,4 +106,9 @@ To run the Hostel Grievance Redressal System locally:
 Contributions are welcome! 
 
 
+// new addition inside routes there is auth.js
+// inside services
+
+
+
 
