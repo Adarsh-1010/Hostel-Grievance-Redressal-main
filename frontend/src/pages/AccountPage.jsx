@@ -65,67 +65,77 @@ function AccountPage() {
   }, []);
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <Navbar />
-      <h2 className="mt-20 ml-5 mr-5 text-2xl font-semibold">Profile</h2>
+      <div className="flex flex-col items-center justify-center pt-28 px-4">
+        <div className="w-full max-w-md">
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl p-5 border border-gray-100">
+            <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-6 text-center">Profile</h2>
 
-      <ul className="mt-6 flex flex-col ml-5 mr-5 ">
-        <li className="lg:w-1/3  sm:w-full inline-flex items-center gap-x-2 py-3 px-4 text-sm border text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
-          <div className="flex items-center justify-between w-full">
-            <span>Name</span>
-            <span>{userName}</span>
+            <ul className="space-y-3">
+              <li className="bg-white/50 backdrop-blur-sm rounded-lg p-3 hover:bg-white/80 transition-all duration-300 border border-gray-100 shadow-sm hover:shadow-md">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600 font-medium">Name</span>
+                  <span className="text-gray-800 font-semibold">{userName}</span>
+                </div>
+              </li>
+              <li className="bg-white/50 backdrop-blur-sm rounded-lg p-3 hover:bg-white/80 transition-all duration-300 border border-gray-100 shadow-sm hover:shadow-md">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600 font-medium">Email</span>
+                  <span className="text-gray-800 font-semibold">{useremail}</span>
+                </div>
+              </li>
+              <li className="bg-white/50 backdrop-blur-sm rounded-lg p-3 hover:bg-white/80 transition-all duration-300 border border-gray-100 shadow-sm hover:shadow-md">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600 font-medium">Phone</span>
+                  <span className="text-gray-800 font-semibold">{userphone}</span>
+                </div>
+              </li>
+              {userType !== "warden" && (
+                <>
+                  <li className="bg-white/50 backdrop-blur-sm rounded-lg p-3 hover:bg-white/80 transition-all duration-300 border border-gray-100 shadow-sm hover:shadow-md">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 font-medium">USN</span>
+                      <span className="text-gray-800 font-semibold">{userUsn}</span>
+                    </div>
+                  </li>
+                  <li className="bg-white/50 backdrop-blur-sm rounded-lg p-3 hover:bg-white/80 transition-all duration-300 border border-gray-100 shadow-sm hover:shadow-md">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 font-medium">Block ID</span>
+                      <span className="text-gray-800 font-semibold">{userblockID}</span>
+                    </div>
+                  </li>
+                  <li className="bg-white/50 backdrop-blur-sm rounded-lg p-3 hover:bg-white/80 transition-all duration-300 border border-gray-100 shadow-sm hover:shadow-md">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 font-medium">Block Name</span>
+                      <span className="text-gray-800 font-semibold">{userblockname}</span>
+                    </div>
+                  </li>
+                  <li className="bg-white/50 backdrop-blur-sm rounded-lg p-3 hover:bg-white/80 transition-all duration-300 border border-gray-100 shadow-sm hover:shadow-md">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 font-medium">Room</span>
+                      <span className="text-gray-800 font-semibold">{userRoom}</span>
+                    </div>
+                  </li>
+                </>
+              )}
+            </ul>
+
+            <div className="mt-6 flex justify-center">
+              <Link
+                to="/"
+                className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Home
+              </Link>
+            </div>
           </div>
-        </li>
-        <li className="lg:w-1/3  sm:w-full inline-flex items-center gap-x-2 py-3 px-4 text-sm border text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
-          <div className="flex items-center justify-between w-full">
-            <span>Email</span>
-            <span>{useremail}</span>
-          </div>
-        </li>
-        <li className="lg:w-1/3  sm:w-full inline-flex items-center gap-x-2 py-3 px-4 text-sm border text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
-          <div className="flex items-center justify-between w-full">
-            <span>Phone</span>
-            <span>{userphone}</span>
-          </div>
-        </li>
-        {userType !== "warden" && (
-          <>
-            <li className="lg:w-1/3  sm:w-full inline-flex items-center gap-x-2 py-3 px-4 text-sm border text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
-              <div className="flex items-center justify-between w-full">
-                <span>USN</span>
-                <span>{userUsn}</span>
-              </div>
-            </li>
-            <li className="lg:w-1/3  sm:w-full inline-flex items-center gap-x-2 py-3 px-4 text-sm border text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
-              <div className="flex items-center justify-between w-full">
-                <span>Block ID</span>
-                <span>{userblockID}</span>
-              </div>
-            </li>
-            <li className="lg:w-1/3  sm:w-full inline-flex items-center gap-x-2 py-3 px-4 text-sm border text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
-              <div className="flex items-center justify-between w-full">
-                <span>Block Name</span>
-                <span>{userblockname}</span>
-              </div>
-            </li>
-            <li className="lg:w-1/3 sm:w-full inline-flex items-center gap-x-2 py-3 px-4 text-sm border text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
-              <div className="flex items-center justify-between w-full">
-                <span>Room</span>
-                <span>{userRoom}</span>
-              </div>
-            </li>
-          </>
-        )}
-      </ul>
-      <button class="mt-5 ml-5 relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-        <Link
-          class=" relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-blue-500 rounded-md group-hover:bg-opacity-0"
-          to="/"
-        >
-          Back
-        </Link>
-      </button>
-    </>
+        </div>
+      </div>
+    </div>
   );
 }
 

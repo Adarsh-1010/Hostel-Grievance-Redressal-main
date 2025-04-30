@@ -29,6 +29,11 @@ const ComplaintForm = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [room, setRoom] = useState("");
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   const onSubmitForm = async (e) => {
     e.preventDefault();
@@ -53,13 +58,8 @@ const ComplaintForm = () => {
         headers: headers,
         body: JSON.stringify(body),
       });
-      // if (response) {
-      // setTimeout(() => {
-      //   toast.success("Complaint registered Successfully!");
-      // }, [10]);
       alert("Complain registered successfully!");
       window.location = "/";
-      // }
     } catch (err) {
       console.error(err.message);
     }
@@ -67,128 +67,139 @@ const ComplaintForm = () => {
 
   return (
     <>
-      <section className="bg-gray-100 py-12 text-gray-800 sm:py-24 h-full">
-        <div className="bg-gray-100 mx-auto flex max-w-md flex-col rounded-lg lg:max-w-screen-xl lg:flex-row">
+      <section className={`${isDarkMode ? 'bg-[#000435]' : 'bg-gradient-to-br from-blue-50 via-white to-blue-50'} py-12 ${isDarkMode ? 'text-gray-100' : 'text-gray-800'} sm:py-24 min-h-screen transition-colors duration-300`}>
+        <div className="mx-auto flex max-w-md flex-col rounded-lg lg:max-w-screen-xl lg:flex-row gap-8">
           <div className="max-w-2xl px-4 lg:pr-24">
-            <p className="mb-2 text-blue-600">Hostel Grievance Redressal</p>
-            <h3 className="mb-5 text-3xl font-semibold">
-              Submit Your Grievance
-            </h3>
-            <p className="mb-16 text-md text-gray-600">
-              Hostel Grievance Redressal ensures a swift and confidential
-              resolution of student concerns. We guarantee a quick response to
-              submitted complaints, fostering a secure and comfortable living
-              environment for all hostel residents.
-            </p>
-            <div className="mb-5 flex font-medium">
-              <div className="mr-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-7 w-7 text-blue-500"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M7.5 7.5h-.75A2.25 2.25 0 004.5 9.75v7.5a2.25 2.25 0 002.25 2.25h7.5a2.25 2.25 0 002.25-2.25v-7.5a2.25 2.25 0 00-2.25-2.25h-.75m-6 3.75l3 3m0 0l3-3m-3 3V1.5m6 9h.75a2.25 2.25 0 012.25 2.25v7.5a2.25 2.25 0 01-2.25 2.25h-7.5a2.25 2.25 0 01-2.25-2.25v-.75"
-                  />
-                </svg>
-              </div>
-              <div className="">
-                <p className="mb-2">Swift Grievance Resolution</p>
-                <span className="font-normal text-gray-600">
-                  Swift grievance resolution prioritizes timely and effective
-                  solutions, ensuring students' concerns are promptly addressed
-                  and resolved.
-                </span>
-              </div>
+            <div className="flex justify-end mb-4">
+              <button
+                onClick={toggleDarkMode}
+                className={`px-4 py-2 rounded-lg ${isDarkMode ? 'bg-white/10' : 'bg-gray-100'} backdrop-blur-sm border ${isDarkMode ? 'border-white/20' : 'border-gray-200'} hover:bg-opacity-20 transition-all duration-300`}
+              >
+                {isDarkMode ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                )}
+              </button>
             </div>
-            <div className="mb-5 flex font-medium">
-              <div className="mr-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-7 w-7 text-blue-500"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
-                  />
-                </svg>
-              </div>
-              <div className="">
-                <p className="mb-2">Confidentiality Assured</p>
-                <span className="font-normal text-gray-600">
-                  Your grievances are handled with utmost confidentiality,
-                  ensuring privacy and trust throughout the hostel grievance
-                  redressal process.
-                </span>
-              </div>
+            <div className="mb-8 transform hover:scale-[1.02] transition-transform duration-300">
+              <p className={`mb-2 ${isDarkMode ? 'text-blue-400' : 'text-blue-600'} font-semibold tracking-wide`}>Hostel Grievance Redressal</p>
+              <h3 className={`mb-5 text-4xl font-bold bg-gradient-to-r ${isDarkMode ? 'from-blue-400 to-blue-600' : 'from-blue-600 to-blue-800'} bg-clip-text text-transparent`}>
+                Submit Your Grievance
+              </h3>
+              <p className={`text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-600'} leading-relaxed`}>
+                Hostel Grievance Redressal ensures a swift and confidential
+                resolution of student concerns. We guarantee a quick response to
+                submitted complaints, fostering a secure and comfortable living
+                environment for all hostel residents.
+              </p>
             </div>
-            <div className="mb-5 flex font-medium">
-              <div className="mr-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-7 w-7 text-blue-500"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"
-                  />
-                </svg>
+            <div className="space-y-6">
+              <div className={`flex font-medium ${isDarkMode ? 'bg-white/10' : 'bg-white'} p-6 rounded-xl hover:shadow-lg transition-all duration-300 ${isDarkMode ? 'border border-white/20' : 'border border-gray-100'} transform hover:-translate-y-1`}>
+                <div className="mr-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className={`h-8 w-8 ${isDarkMode ? 'text-blue-400' : 'text-blue-500'}`}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M7.5 7.5h-.75A2.25 2.25 0 004.5 9.75v7.5a2.25 2.25 0 002.25 2.25h7.5a2.25 2.25 0 002.25-2.25v-7.5a2.25 2.25 0 00-2.25-2.25h-.75m-6 3.75l3 3m0 0l3-3m-3 3V1.5m6 9h.75a2.25 2.25 0 012.25 2.25v7.5a2.25 2.25 0 01-2.25 2.25h-7.5a2.25 2.25 0 01-2.25-2.25v-.75"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className={`mb-2 text-xl font-semibold ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Swift Grievance Resolution</p>
+                  <span className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>
+                    Swift grievance resolution prioritizes timely and effective
+                    solutions, ensuring students' concerns are promptly addressed
+                    and resolved.
+                  </span>
+                </div>
               </div>
-              <div className="">
-                <p className="mb-2">Easy Communication</p>
-                <span className="font-normal text-gray-600">
-                  Effortless communication is facilitated, providing a smooth
-                  and accessible channel for expressing and resolving grievances
-                  within the hostel community.
-                </span>
+              <div className={`flex font-medium ${isDarkMode ? 'bg-white/10' : 'bg-white'} p-6 rounded-xl hover:shadow-lg transition-all duration-300 ${isDarkMode ? 'border border-white/20' : 'border border-gray-100'} transform hover:-translate-y-1`}>
+                <div className="mr-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className={`h-8 w-8 ${isDarkMode ? 'text-blue-400' : 'text-blue-500'}`}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className={`mb-2 text-xl font-semibold ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Confidentiality Assured</p>
+                  <span className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>
+                    Your grievances are handled with utmost confidentiality,
+                    ensuring privacy and trust throughout the hostel grievance
+                    redressal process.
+                  </span>
+                </div>
+              </div>
+              <div className={`flex font-medium ${isDarkMode ? 'bg-white/10' : 'bg-white'} p-6 rounded-xl hover:shadow-lg transition-all duration-300 ${isDarkMode ? 'border border-white/20' : 'border border-gray-100'} transform hover:-translate-y-1`}>
+                <div className="mr-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className={`h-8 w-8 ${isDarkMode ? 'text-blue-400' : 'text-blue-500'}`}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className={`mb-2 text-xl font-semibold ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Easy Communication</p>
+                  <span className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>
+                    Effortless communication is facilitated, providing a smooth
+                    and accessible channel for expressing and resolving grievances
+                    within the hostel community.
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-          <div className="border border-gray-100 shadow-gray-500/20 mt-8 mb-8 max-w-md bg-white shadow-sm sm:rounded-lg sm:shadow-lg lg:mt-0">
-            <div className="relative border-b border-gray-300 p-4 py-8 sm:px-8">
-              <h3 className="mb-1 inline-block text-3xl font-medium">
+          <div className={`mt-8 mb-8 max-w-md ${isDarkMode ? 'bg-white/10' : 'bg-white'} rounded-xl shadow-xl lg:mt-0 ${isDarkMode ? 'border border-white/20' : 'border border-gray-100'} transform hover:scale-[1.02] transition-transform duration-300`}>
+            <div className={`relative border-b ${isDarkMode ? 'border-white/20' : 'border-gray-200'} p-6 sm:px-8`}>
+              <h3 className={`mb-1 inline-block text-3xl font-bold ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
                 <span className="mr-4">Submit Complaint</span>
-                <span className="inline-block rounded-md bg-blue-100 px-2 py-1 text-sm text-blue-700 sm:inline">
+                <span className={`inline-block rounded-md ${isDarkMode ? 'bg-blue-400/20 text-blue-300' : 'bg-blue-100 text-blue-700'} px-3 py-1 text-sm font-medium`}>
                   Quick Response
                 </span>
               </h3>
-              <p className="text-gray-600">
+              <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>
                 Contact us for hostel grievance redressal
               </p>
             </div>
-            <div className="p-4 sm:p-8">
-              {/* <input
-                id="name"
-                type="text"
-                className="mt-1 w-full resize-y overflow-auto rounded-lg border border-gray-300 px-4 py-2 shadow-sm focus:border-blue-500 focus:outline-none hover:border-blue-500"
-                placeholder="Enter Complaint name"
-                onChange={(e) => setName(e.target.value)}
-              /> */}
+            <div className="p-6 sm:p-8">
               <select
-                className="w-full p-3 mb-4 border border-gray-300 rounded text-base"
+                className={`w-full p-3 mb-4 border ${isDarkMode ? 'border-white/20 bg-white/5 text-gray-200' : 'border-gray-300 text-gray-700'} rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 hover:border-blue-400`}
                 id="complaintType"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
               >
-                <option value="" disabled>
-                  Select a complaint type
-                </option>
+                <option value="" disabled>Select a complaint type</option>
                 <option value="Plumbing">Plumbing</option>
                 <option value="Electrical">Electrical</option>
                 <option value="Cleaning">Cleaning</option>
@@ -198,23 +209,23 @@ const ComplaintForm = () => {
               <input
                 id="email"
                 type="text"
-                className="peer mt-8 w-full resize-y overflow-auto rounded-lg border border-gray-300 px-4 py-2 shadow-sm focus:border-blue-500 focus:outline-none hover:border-blue-500"
+                className={`w-full p-3 mb-4 border ${isDarkMode ? 'border-white/20 bg-white/5 text-gray-200' : 'border-gray-300 text-gray-700'} rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 hover:border-blue-400`}
                 placeholder="Enter your Room No."
                 onChange={(e) => setRoom(e.target.value)}
               />
-              <label className="mt-5 mb-2 inline-block max-w-full">
+              <label className={`mt-5 mb-2 inline-block ${isDarkMode ? 'text-gray-200' : 'text-gray-700'} font-medium`}>
                 Tell us about your grievance
               </label>
               <textarea
                 id="about"
-                className="mb-8 w-full resize-y overflow-auto rounded-lg border border-gray-300 px-4 py-2 shadow-sm focus:border-blue-500 focus:outline-none hover:border-blue-500"
+                className={`w-full p-3 mb-8 border ${isDarkMode ? 'border-white/20 bg-white/5 text-gray-200' : 'border-gray-300 text-gray-700'} rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 hover:border-blue-400 min-h-[120px]`}
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
               <button
-                className="w-full rounded-lg border border-blue-700 bg-blue-700 p-3 text-center font-medium text-white outline-none transition focus:ring hover:border-blue-700 hover:bg-blue-600 hover:text-white"
+                className={`w-full rounded-lg bg-gradient-to-r ${isDarkMode ? 'from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700' : 'from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'} p-3 text-center font-medium text-white shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-300 transform hover:-translate-y-0.5`}
                 onClick={onSubmitForm}
               >
-                Submit
+                Submit Complaint
               </button>
             </div>
           </div>

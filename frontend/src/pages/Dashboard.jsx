@@ -41,8 +41,8 @@ function Dashboard() {
   return (
     <>
       <Navbar />
-      {userType === "student" && <div className="mt-8"><Complaint /> <ComplaintForm/></div>}  {/* Render Complaint for student */}
-      {userType === "warden" && <WardenComplaints />}  {/* Render WardenComplaints for warden */}
+      {userType === "student" && <div className="mt-8"><Complaint /> <ComplaintForm/></div>} 
+      {userType === "warden" && <WardenComplaints />}  
     </>
   );
 }

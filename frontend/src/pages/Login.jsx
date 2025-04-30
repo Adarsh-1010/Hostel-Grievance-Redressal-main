@@ -51,11 +51,13 @@ function Login() {
         </div>
         <div className="right-section">
           <div className="login-form">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/en/b/ba/Indian_Institute_of_Information_Technology%2C_Ranchi_Logo.png" /* Replace with your logo URL */
-              alt="Logo"
-              className="logo"
-            />
+            <div className="flex justify-center mb-6">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/en/b/ba/Indian_Institute_of_Information_Technology%2C_Ranchi_Logo.png"
+                alt="Logo"
+                className="logo w-32 h-32 object-contain"
+              />
+            </div>
             <div className="tabs">
               <button
                 className={`tab ${role === "Student" ? "active-tab" : ""}`}
