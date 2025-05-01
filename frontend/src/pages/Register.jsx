@@ -14,10 +14,22 @@ function Register() {
   const [usn, setUsn] = useState("");
   const [room, setRoom] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+  const validateEmail = (email) => {
+    return email.endsWith("@iiitranchi.ac.in");
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     
+    // Check if email is valid
+    if (!validateEmail(email)) {
+      setEmailError("Only @iiitranchi.ac.in email addresses are allowed");
+      return;
+    }
+    setEmailError("");
+
     // Check if passwords match
     if (password !== confirmPassword) {
       setPasswordError("Passwords do not match");
@@ -135,11 +147,23 @@ function Register() {
                     <label className="text-sm font-medium text-gray-700">Email</label>
                     <input
                       type="email"
-                      className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                      className={`w-full px-3 py-2 rounded-lg border ${
+                        emailError ? 'border-red-500' : 'border-gray-300'
+                      } focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200`}
                       placeholder="Enter your email"
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        if (!validateEmail(e.target.value) && e.target.value) {
+                          setEmailError("Only @iiitranchi.ac.in email addresses are allowed");
+                        } else {
+                          setEmailError("");
+                        }
+                      }}
                       required
                     />
+                    {emailError && (
+                      <p className="text-sm text-red-500 mt-1">{emailError}</p>
+                    )}
                   </div>
 
                   <div className="space-y-1">
