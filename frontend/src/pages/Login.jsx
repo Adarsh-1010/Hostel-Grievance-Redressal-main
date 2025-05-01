@@ -9,11 +9,32 @@ function Login() {
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const validateEmail = (email, role) => {
+    if (role === "Admin" && email !== "wardens@iiitranchi.ac.in") {
+      return false;
+    }
+    if (role === "Student" && email === "wardens@iiitranchi.ac.in") {
+      return false;
+    }
+    return true;
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    // Validate email based on role
+    if (!validateEmail(email, role)) {
+      setErrorMessage(
+        role === "Admin" 
+          ? "Only Wardens can login as Admin" 
+          : "Admin email cannot be used for Student login"
+      );
+      setShowErrorModal(true);
+      return;
+    }
+
     try {
-      const body = { email, password };
+      const body = { email, password, role };
       const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -35,6 +56,12 @@ function Login() {
       setShowErrorModal(true);
       console.log(err.message);
     }
+  };
+
+  // Clear email when role changes
+  const handleRoleChange = (newRole) => {
+    setRole(newRole);
+    setEmail("");
   };
 
   return (
@@ -66,13 +93,13 @@ function Login() {
             <div className="tabs">
               <button
                 className={`tab ${role === "Student" ? "active-tab" : ""}`}
-                onClick={() => setRole("Student")}
+                onClick={() => handleRoleChange("Student")}
               >
                 Student Login
               </button>
               <button
                 className={`tab ${role === "Admin" ? "active-tab" : ""}`}
-                onClick={() => setRole("Admin")}
+                onClick={() => handleRoleChange("Admin")}
               >
                 Admin Login
               </button>
@@ -80,7 +107,7 @@ function Login() {
             <form onSubmit={onSubmit}>
               <input
                 type="text"
-                placeholder="Email"
+                placeholder={role === "Admin" ? "Enter warden email" : "Enter student email"}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="input-field"
