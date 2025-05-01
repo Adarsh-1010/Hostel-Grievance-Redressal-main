@@ -3,17 +3,25 @@ import Register from "./pages/Register";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import { RoutesPathName } from "./constants";
 import PrivateRoute from "./utils/PrivateRoute";
+import PublicRoute from "./utils/PublicRoute";
 import AccountPage from "./pages/AccountPage";
 
 const routes = createBrowserRouter([
   {
     path: RoutesPathName.SIGNUP_PAGE,
-    index: true,
-    Component: Register,
+    element: (
+      <PublicRoute>
+        <Register />
+      </PublicRoute>
+    ),
   },
   {
     path: RoutesPathName.LOGIN_PAGE,
-    element: <Login />,
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    ),
   },
   {
     path: RoutesPathName.ACCOUNT,
