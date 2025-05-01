@@ -46,7 +46,7 @@ const ComplaintForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          toEmail: "adarshpathak181210@gmail.com",
+          toEmail: "wardens@iiitranchi.ac.in",
           subject: subject,
           message: message,
         }),
